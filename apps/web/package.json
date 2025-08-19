@@ -1,5 +1,6 @@
 {
   "name": "web",
+  "type": "module",
   "scripts": {
     "dev": "remix dev",
     "build": "remix build",
