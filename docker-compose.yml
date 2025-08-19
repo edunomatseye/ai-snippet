@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build: ./apps/api
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/snippets
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+
+  web:
+    build: ./apps/web
+    environment:
+      - API_URL=http://localhost:3000
+      - PORT=3030
+    ports:
+      - "3030:3030"
+    depends_on:
+      - api
+
+volumes:
+  mongo_data:
