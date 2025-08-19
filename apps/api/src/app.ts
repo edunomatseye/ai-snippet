@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
+import { summarizeText } from "./services/ai.services";
 
 dotenv.config();
 
@@ -21,20 +22,19 @@ app.post("/snippets", async (req, res) => {
   const { text } = req.body;
   if (!text) return res.status(400).json({ error: "Text required" });
 
-  const summary = await generateText({
-    model: openai("gpt-3.5-turbo"),
-    prompt: `Summarize the following text in less than 30 words: ${text}`,
-  });
-
-  const snippet = await Snippet.create({ text, summary: summary.text });
-  res.json(snippet);
-
+  let snippet;
   try {
-    const summary = await generateText({
-      model: openai("gpt-3.5-turbo"),
-      prompt: `Summarize the following text in less than 30 words: ${text}`,
-    });
-    const snippet = await Snippet.create({ text, summary: summary.text });
+    if (!process.env.OPENAI_API_KEY) {
+      const summary = await generateText({
+        model: openai("gpt-3.5-turbo"),
+        prompt: `Summarize the following text in less than 30 words: ${text}`,
+      });
+      snippet = await Snippet.create({ text, summary: summary.text });
+    } else {
+      const summary = await summarizeText(text);
+      snippet = await Snippet.create({ text, summary });
+    }
+
     res.json(snippet);
   } catch (err) {
     console.error(err);

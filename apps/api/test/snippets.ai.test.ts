@@ -1,7 +1,11 @@
 import request from "supertest";
-import { beforeAll, afterAll, describe, it, expect } from "vitest";
+import { beforeAll, afterAll, describe, it, expect, vi } from "vitest";
 import mongoose from "mongoose";
 import app from "../src/app";
+import * as aiService from "../src/services/ai.services";
+
+// Mock summarizeText to avoid real OpenAI calls
+vi.spyOn(aiService, "summarizeText").mockResolvedValue("Mock summary here");
 
 beforeAll(async () => {
   await mongoose.connect("mongodb://localhost:27017/snippets_test");
@@ -22,7 +26,7 @@ elsewhere. You will build the back-end for such a service`,
       });
 
     expect(res.status).toBe(200);
-    expect(res.body.summary).toContain("content");
+    expect(res.body.summary).toContain("Mock summary here");
   });
 
   it("should list snippets", async () => {
