@@ -28,6 +28,18 @@ app.post("/snippets", async (req, res) => {
 
   const snippet = await Snippet.create({ text, summary: summary.text });
   res.json(snippet);
+
+  try {
+    const summary = await generateText({
+      model: openai("gpt-3.5-turbo"),
+      prompt: `Summarize the following text in less than 30 words: ${text}`,
+    });
+    const snippet = await Snippet.create({ text, summary: summary.text });
+    res.json(snippet);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to generate summary" });
+  }
 });
 
 app.get("/snippets", async (_req, res) => {
