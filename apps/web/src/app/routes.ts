@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
-import { Root, App } from "../App";
+import { App, Index } from "./routes/App";
 
 async function fetchTeam(teamId: string) {
   return {
@@ -12,7 +12,7 @@ async function fetchTeam(teamId: string) {
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: App,
+    Component: Index,
   },
   {
     path: "/app",
@@ -27,6 +27,6 @@ export const router = createBrowserRouter([
       const team = await fetchTeam(params.teamId);
       return { name: team.name };
     },
-    Component: Root,
+    Component: Index,
   },
 ]);

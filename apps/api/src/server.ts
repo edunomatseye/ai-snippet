@@ -1,7 +1,10 @@
-import app from "./app";
 import mongoose from "mongoose";
+import app from "./app";
+import dotenv from "dotenv";
+dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
+console.log(`Starting API on port ${PORT}...`);
 
 mongoose
   .connect(process.env.MONGO_URI || "mongodb://localhost:27017/snippets")

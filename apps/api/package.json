@@ -4,8 +4,10 @@
   "scripts": {
     "dev": "ts-node-dev src/server.ts",
     "build": "tsc",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest --watch"
   },
+  "type": "module",
   "dependencies": {
     "express": "^4.19.0",
     "mongoose": "^7.6.0",

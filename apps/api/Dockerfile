@@ -1,7 +1,7 @@
 # Stage 1: Build + test
 FROM node:20-alpine AS build
 
-WORKDIR /app
+WORKDIR /apps
 
 # Install dependencies
 COPY package.json package-lock.json* ./
@@ -19,7 +19,7 @@ RUN npm test
 # Stage 2: Production image
 FROM node:20-alpine AS prod
 
-WORKDIR /app
+WORKDIR /apps
 
 # Install only production deps
 COPY package.json package-lock.json* ./

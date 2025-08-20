@@ -21,8 +21,8 @@ describe("Snippets API", () => {
       .post("/snippets")
       .send({
         text: `Content teams often need a quick way to paste in raw text (blog drafts,
-transcripts, etc.) and get back short, AI-generated summaries they can reuse
-elsewhere. You will build the back-end for such a service`,
+                transcripts, etc.) and get back short, AI-generated summaries they can reuse
+                elsewhere. You will build the back-end for such a service`,
       });
 
     expect(res.status).toBe(200);
